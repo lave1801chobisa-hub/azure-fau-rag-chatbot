@@ -12,5 +12,6 @@ chromadb==1.5.9
 pypdf==6.18.0
 sentence-transformers==6.0.1
 torch==2.14.0
-transformers==5.16.1
+torchvision
+torchaudio
 pydantic==2.13.5
