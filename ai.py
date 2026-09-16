@@ -186,7 +186,7 @@ if prompt:
                 st.error("No indexed documents found. Upload and index your PDFs in the sidebar first.")
             else:
                 try:
-                    openrouter_api_key = os.environ.get("OPENROUTER_API_KEY")
+                    openrouter_api_key = os.environ.get("OPENAI_API_KEY")
                     groq_chat = ChatOpenAI(
                         api_key=openrouter_api_key,
                         openai_api_base="https://openrouter.ai/api/v1",
