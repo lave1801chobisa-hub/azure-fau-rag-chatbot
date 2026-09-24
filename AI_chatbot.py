@@ -1,4 +1,3 @@
-
 import os
 import shutil
 import tempfile
@@ -394,6 +393,7 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
                 contextualize_q_system_prompt = (
                     "Given a chat history and the latest user prompt which might reference previous topics, "
                     "formulate a standalone search query that can be used to search the database. "
+                    "Maintain the same language as the user input or the referenced documents. "
                     "Do NOT answer the question, just reformulate it to be self-contained."
                 )
                 
@@ -420,11 +420,18 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
 
                 context_text, retrieved_docs = get_balanced_context(standalone_query, selected_files=selected_docs, top_k_per_doc=6)
 
-                template = """You are an expert academic study assistant. Answer the user's question directly, comprehensively, and thoroughly based strictly on the provided context.
+                template = """You are an expert academic study assistant. 
+
+Language Requirement:
+- Analyze the primary language used in the provided context or the user's question.
+- You MUST write your entire response in that SAME language.
+  (For example, if the context or query is in German, answer in German; if Spanish, answer in Spanish; if French, answer in French; etc.)
+
+Answer the user's question directly, comprehensively, and thoroughly based strictly on the provided context.
 
 If the user asks for a SUMMARY (e.g., "summarize", "overview", "key points", "summarize all files", "summarize both files"):
 1. You MUST organize your summary into distinct sections for EVERY document present in the context using bold Markdown headings (e.g., `### Document: <filename>`).
-2. Provide a detailed summary covering core concepts, theoretical explanations, and conclusions for EACH file separately.
+2. Provide a detailed summary covering core concepts, theoretical explanations, and conclusions for EACH file separately in the language of the document.
 3. Do NOT skip any document found in the context.
 
 When presenting mathematical equations, formulas, variables, or expressions found in the text:
